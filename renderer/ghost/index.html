@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; }
+    html, body {
+      width: 72px;
+      height: 72px;
+      background: transparent;
+      overflow: hidden;
+    }
+    #ghost-img {
+      width: 64px;
+      height: 64px;
+      margin: 4px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      opacity: 0.8;
+    }
+    #ghost-emoji {
+      width: 64px;
+      height: 64px;
+      margin: 4px;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <img id="ghost-img" src="" alt="">
+  <div id="ghost-emoji" style="display:none"></div>
+  <script>
+    window.electronAPI.onGhostItemData((itemData) => {
+      const img = document.getElementById('ghost-img');
+      const emoji = document.getElementById('ghost-emoji');
+      img.src = `../../assets/items/${itemData.assetKey}.png`;
+      img.onerror = () => {
+        img.style.display = 'none';
+        emoji.style.display = 'flex';
+        // 이모지는 별도 매핑 없이 박스로 표시
+        emoji.textContent = '📦';
+      };
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+appId: com.yourname.desktop-pet
+productName: 데스크탑 펫
+directories:
+  output: dist
+files:
+  - main/**
+  - renderer/**
+  - preload/**
+  - store/**
+  - assets/**
+  - package.json
+
+mac:
+  category: public.app-category.entertainment
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: assets/icon.ico
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true

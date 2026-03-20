@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우주선 위젯</title>
+  <link rel="stylesheet" href="widget.css">
+</head>
+<body>
+  <!-- 상단 툴바 (창 드래그 영역 + 종료 버튼만) -->
+  <div id="toolbar">
+    <div id="toolbar-buttons">
+      <button id="btn-close" title="종료">✕</button>
+    </div>
+  </div>
+
+  <!-- 무대 -->
+  <div id="stage">
+    <!-- 레이어 0: 우주 배경 -->
+    <img id="bg-space" src="../../assets/background-space.png" alt="">
+    <!-- 레이어 1: 우주선 내부 (흔들림 적용) -->
+    <img id="bg-interior" src="../../assets/background-interior.png" alt="">
+    <!-- 레이어 2: 떠다니는 아이템 -->
+    <div id="item-layer"></div>
+    <!-- 레이어 3: 캐릭터 -->
+    <canvas id="character-canvas"></canvas>
+    <!-- 인벤토리 버튼 (좌상단) -->
+    <button id="btn-inventory" title="인벤토리">🎒</button>
+    <!-- 인벤토리 패널 (상단에서 슬라이드, JS로 아이템 채움) -->
+    <div id="inventory-panel"></div>
+    <!-- 삭제 존 (꾹 누르고 드래그 시 나타남) -->
+    <div id="delete-zone">✕</div>
+  </div>
+
+  <script src="spriteAnimator.js"></script>
+  <script src="character.js"></script>
+  <script src="itemManager.js"></script>
+  <script src="widget.js"></script>
+</body>
+</html>
