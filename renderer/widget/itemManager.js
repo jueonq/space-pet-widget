@@ -57,40 +57,13 @@ class ItemManager {
     this._attachLongPress(el, itemData.id);
   }
 
-  // ── 꾹 누르기 감지 ───────────────────────────────────────
+  // ── 클릭 즉시 드래그 시작 ───────────────────────────────
   _attachLongPress(el, id) {
     el.addEventListener('mousedown', (e) => {
       if (e.button !== 0) return;
       e.preventDefault();
       e.stopPropagation();
-
-      const startX = e.clientX;
-      const startY = e.clientY;
-      let cancelled = false;
-
-      const cancel = () => {
-        cancelled = true;
-        clearTimeout(timer);
-        document.removeEventListener('mousemove', onMoveCheck);
-      };
-
-      const onMoveCheck = (ev) => {
-        if (Math.abs(ev.clientX - startX) > 8 || Math.abs(ev.clientY - startY) > 8) {
-          cancel();
-        }
-      };
-
-      const timer = setTimeout(() => {
-        if (cancelled) return;
-        document.removeEventListener('mousemove', onMoveCheck);
-        document.removeEventListener('mouseup', onUpCancel);
-        this._startDrag(id);
-      }, 500);
-
-      const onUpCancel = () => cancel();
-
-      document.addEventListener('mousemove', onMoveCheck);
-      document.addEventListener('mouseup', onUpCancel, { once: true });
+      this._startDrag(id);
     });
   }
 
@@ -207,7 +180,9 @@ function _emojiFor(assetKey) {
     'juice-pack':  '🧃',
     'socks':       '🧦',
     'apple':       '🍎',
-    'pencil':      '✏️',
+    'pensil':      '✏️',
+    'poop':        '💩',
+    'plant':       '🌱',
   };
   return map[assetKey] ?? '📦';
 }

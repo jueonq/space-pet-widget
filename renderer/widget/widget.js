@@ -78,7 +78,9 @@ const INVENTORY_ITEMS = [
   { assetKey: 'juice-pack',  emoji: '🧃' },
   { assetKey: 'socks',       emoji: '🧦' },
   { assetKey: 'apple',       emoji: '🍎' },
-  { assetKey: 'pencil',      emoji: '✏️' },
+  { assetKey: 'pensil',      emoji: '✏️' },
+  { assetKey: 'poop',        emoji: '💩' },
+  { assetKey: 'plant',       emoji: '🌱' },
 ];
 
 // 패널 아이템 슬롯 생성
