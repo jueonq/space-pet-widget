@@ -189,7 +189,7 @@ let bubbleTimeout = null;
 const DIALOGUE_LINES = [
   "엔진 이상 없음.",
   "이 별... 전에 본 것 같은데.",
-  "오늘 뭐 해?",
+  "오늘은 무슨 작업해?",
   "우주에서 라면 끓이면\n어떻게 될까",
   "목성 쪽에서 이상한 신호가 잡혔어.",
   "밥은 먹었어?",
@@ -231,8 +231,11 @@ function showDialogue() {
   }, 4000);
 }
 
+let scheduleTimer = null;
+
 function scheduleDialogue() {
-  setTimeout(showDialogue, 25000 + Math.random() * 35000);
+  if (scheduleTimer) clearTimeout(scheduleTimer);
+  scheduleTimer = setTimeout(showDialogue, 25000 + Math.random() * 35000);
 }
 scheduleDialogue();
 
@@ -267,8 +270,8 @@ if (furnitureSwitch) {
   furnitureSwitch.addEventListener('click', () => {
     lightsOn = !lightsOn;
     lightOverlay.classList.toggle('lights-off', !lightsOn);
-    if (!lightsOn) showReaction('앗, 불 꺼졌다!');
-    else showReaction('불 다시 켰어.');
+    if (!lightsOn) showReaction('뭐야!');
+    else showReaction('다시 켜졌네.');
   });
 }
 

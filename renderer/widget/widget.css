@@ -135,7 +135,7 @@ html, body {
 #light-overlay {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 6;   /* item-layer(5) 위, character-canvas(10) 아래 */
   background: rgba(0, 0, 20, 0.6);
   pointer-events: none;
   opacity: 0;
