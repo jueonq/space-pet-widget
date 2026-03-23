@@ -93,6 +93,59 @@ html, body {
   animation: ship-shake 0.65s ease-in-out;
 }
 
+/* ── 가구 레이어 ── */
+#furniture-switch,
+#furniture-panel {
+  position: absolute;
+  object-fit: contain;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: filter 0.15s;
+}
+
+#furniture-switch:hover,
+#furniture-panel:hover {
+  filter: brightness(1.2);
+}
+
+#furniture-switch:active,
+#furniture-panel:active {
+  filter: brightness(0.8);
+}
+
+#furniture-switch {
+  width: 52px;
+  bottom: 30px;
+  right: 58px;
+  z-index: 2;
+}
+
+#furniture-panel {
+  width: 88px;
+  bottom: 24px;
+  right: 120px;
+  z-index: 3;
+}
+
+/* 이미지 없을 때 숨김 */
+#furniture-switch.hidden,
+#furniture-panel.hidden { display: none; }
+
+/* ── 조명 오버레이 ── */
+#light-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgba(0, 0, 20, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+#light-overlay.lights-off {
+  opacity: 1;
+}
+
 /* ── 캐릭터 캔버스 ── */
 #character-canvas {
   position: absolute;
@@ -100,6 +153,43 @@ html, body {
   image-rendering: crisp-edges;
   cursor: default;
   z-index: 10;
+}
+
+/* ── 말풍선 ── */
+#speech-bubble {
+  position: absolute;
+  max-width: 160px;
+  background: rgba(18, 18, 18, 0.92);
+  color: #ffffff;
+  font-family: Galmuri11, sans-serif;
+  font-size: 11px;
+  line-height: 1.6;
+  border-radius: 10px;
+  padding: 6px 10px;
+  pointer-events: none;
+  z-index: 15;
+  text-align: center;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 7px 6px 0;
+  border-style: solid;
+  border-color: rgba(18,18,18,0.92) transparent transparent;
+}
+
+#speech-bubble.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ── 인벤토리 버튼 (스테이지 내 좌상단) ── */

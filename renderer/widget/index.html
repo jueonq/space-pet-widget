@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>우주선 위젯</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css">
   <link rel="stylesheet" href="widget.css">
 </head>
 <body>
@@ -20,10 +21,17 @@
     <img id="bg-space" src="../../assets/background-space.png" alt="">
     <!-- 레이어 1: 우주선 내부 (흔들림 적용) -->
     <img id="bg-interior" src="../../assets/background-interior.png" alt="">
-    <!-- 레이어 2: 떠다니는 아이템 -->
+    <!-- 레이어 2: 인터랙티브 가구 -->
+    <img id="furniture-switch" src="../../assets/furniture/switch.png" alt="switch">
+    <img id="furniture-panel"  src="../../assets/furniture/control-panel.png" alt="panel">
+    <!-- 레이어 3: 조명 오버레이 (스위치 off 시 어두워짐) -->
+    <div id="light-overlay"></div>
+    <!-- 레이어 4: 떠다니는 아이템 -->
     <div id="item-layer"></div>
     <!-- 레이어 3: 캐릭터 -->
     <canvas id="character-canvas"></canvas>
+    <!-- 말풍선 -->
+    <div id="speech-bubble"></div>
     <!-- 인벤토리 버튼 (좌상단) -->
     <button id="btn-inventory" title="인벤토리">📦</button>
     <!-- 인벤토리 패널 (상단에서 슬라이드, JS로 아이템 채움) -->

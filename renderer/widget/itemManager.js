@@ -39,14 +39,15 @@ class ItemManager {
     this.container.appendChild(el);
 
     const sign = () => (Math.random() < 0.5 ? 1 : -1);
+    const m = itemData.speedMultiplier ?? 1;
     const state = {
       el,
       x: Math.max(ITEM_SIZE / 2, Math.min(itemData.x, STAGE_W - ITEM_SIZE / 2)),
       y: Math.max(ITEM_SIZE / 2, Math.min(itemData.y, STAGE_H - ITEM_SIZE / 2)),
-      vx: sign() * (0.04 + Math.random() * 0.08),
-      vy: sign() * (0.03 + Math.random() * 0.06),
+      vx: sign() * (0.02 + Math.random() * 0.04) * m,
+      vy: sign() * (0.015 + Math.random() * 0.03) * m,
       angle: Math.random() * 360,
-      w: sign() * (0.02 + Math.random() * 0.04),
+      w:  sign() * (0.01 + Math.random() * 0.02) * m,
       driftTimer: 0,
       driftInterval: 2000 + Math.random() * 3000,
       frozen: false,
@@ -107,8 +108,8 @@ class ItemManager {
         // 물리 재개 (새 속도 부여)
         state.frozen = false;
         const sign = () => (Math.random() < 0.5 ? 1 : -1);
-        state.vx = sign() * (0.04 + Math.random() * 0.08);
-        state.vy = sign() * (0.03 + Math.random() * 0.06);
+        state.vx = sign() * (0.02 + Math.random() * 0.04);
+        state.vy = sign() * (0.015 + Math.random() * 0.03);
       }
     };
 
@@ -146,9 +147,9 @@ class ItemManager {
         state.driftTimer = 0;
         state.driftInterval = 2000 + Math.random() * 3000;
         const sign = () => (Math.random() < 0.5 ? 1 : -1);
-        state.vx += sign() * Math.random() * 0.02;
-        state.vy += sign() * Math.random() * 0.02;
-        const maxV = 0.15;
+        state.vx += sign() * Math.random() * 0.01;
+        state.vy += sign() * Math.random() * 0.01;
+        const maxV = 0.07;
         const spd = Math.sqrt(state.vx ** 2 + state.vy ** 2);
         if (spd > maxV) {
           state.vx = (state.vx / spd) * maxV;

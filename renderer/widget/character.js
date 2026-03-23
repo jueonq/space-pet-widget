@@ -17,7 +17,7 @@ class Character {
     this.bounds = bounds;
 
     // 바닥 고정 Y
-    this.y = bounds.height - 4;
+    this.y = bounds.height - 10;
     this.x = bounds.width / 2;
 
     this.vx = 0;

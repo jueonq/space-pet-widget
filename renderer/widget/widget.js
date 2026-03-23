@@ -11,8 +11,8 @@ const SPRITE_CONFIG = {
   // frameCount: 1 (단일 포즈 이미지)
   // frameWidth/frameHeight: 화면에 표시될 크기 (실제 이미지 해상도와 무관)
   // flipEnabled: false = 정면 이미지는 방향 무관하게 반전하지 않음
-  idle: { path: '../../assets/sprites/character-idle.png', frameCount: 1, frameWidth: 128, frameHeight: 128, flipEnabled: false },
-  walk: { path: '../../assets/sprites/character-walk.png', frameCount: 1, frameWidth: 128, frameHeight: 128, flipEnabled: true  },
+  idle: { path: '../../assets/sprites/character-idle.png', frameCount: 1, frameWidth: 102, frameHeight: 102, flipEnabled: false },
+  walk: { path: '../../assets/sprites/character-walk.png', frameCount: 1, frameWidth: 102, frameHeight: 102, flipEnabled: true  },
 };
 
 // ─── 초기화 ───────────────────────────────────────────────
@@ -68,19 +68,20 @@ function gameLoop(timestamp) {
   lastTime = timestamp;
   character.update(dt);
   itemManager.update(dt);
+  if (isSpeaking) updateBubblePosition();
   requestAnimationFrame(gameLoop);
 }
 requestAnimationFrame(gameLoop);
 
 // ─── 인벤토리 패널 아이템 정의 ──────────────────────────
 const INVENTORY_ITEMS = [
-  { assetKey: 'soccer-ball', emoji: '⚽' },
-  { assetKey: 'juice-pack',  emoji: '🧃' },
-  { assetKey: 'socks',       emoji: '🧦' },
-  { assetKey: 'apple',       emoji: '🍎' },
-  { assetKey: 'pensil',      emoji: '✏️' },
-  { assetKey: 'poop',        emoji: '💩' },
-  { assetKey: 'plant',       emoji: '🌱' },
+  { assetKey: 'soccer-ball', emoji: '⚽', speed: 1.3 },
+  { assetKey: 'juice-pack',  emoji: '🧃', speed: 0.8 },
+  { assetKey: 'socks',       emoji: '🧦', speed: 0.7 },
+  { assetKey: 'apple',       emoji: '🍎', speed: 0.9 },
+  { assetKey: 'pensil',      emoji: '✏️', speed: 0.6 },
+  { assetKey: 'poop',        emoji: '💩', speed: 0.5 },
+  { assetKey: 'plant',       emoji: '🌱', speed: 0.4 },
 ];
 
 // 패널 아이템 슬롯 생성
@@ -142,6 +143,7 @@ INVENTORY_ITEMS.forEach((item) => {
         itemManager.addItem({
           id: `${item.assetKey}-${Date.now()}`,
           assetKey: item.assetKey,
+          speedMultiplier: item.speed ?? 1,
           x,
           y,
         });
@@ -178,6 +180,111 @@ document.addEventListener('mousedown', (e) => {
     closePanel();
   }
 });
+
+// ─── 말풍선 시스템 ───────────────────────────────────────
+const speechBubble = document.getElementById('speech-bubble');
+let isSpeaking = false;
+let bubbleTimeout = null;
+
+const DIALOGUE_LINES = [
+  "엔진 이상 없음.",
+  "이 별... 전에 본 것 같은데.",
+  "오늘 뭐 해?",
+  "우주에서 라면 끓이면\n어떻게 될까",
+  "목성 쪽에서 이상한 신호가 잡혔어.",
+  "밥은 먹었어?",
+  "조용하다.. 좋아.",
+  "버튼 함부로 누르면 안돼!",
+  "산소 잔량 98%.. 여유롭네.",
+  "지구 보고 싶다.",
+  "여기 진짜 별 많다.",
+  "자꾸 창밖을 보게 돼.",
+  "뭔가 지나간 것 같기도 하고..",
+  "지금 몇 시야?",
+  "커피 있으면 좋겠는데.",
+  "우주는 생각보다 조용해.",
+  "졸리다..",
+];
+
+function updateBubblePosition() {
+  const bw = speechBubble.offsetWidth  || 160;
+  const bh = speechBubble.offsetHeight || 30;
+  let bx = character.x - bw / 2;
+  bx = Math.max(4, Math.min(WIDGET_WIDTH - bw - 4, bx));
+  const by = Math.round(character.y - characterCanvas.height - bh - 8);
+  speechBubble.style.left = `${bx}px`;
+  speechBubble.style.top  = `${by}px`;
+}
+
+function showDialogue() {
+  const line = DIALOGUE_LINES[Math.floor(Math.random() * DIALOGUE_LINES.length)];
+  speechBubble.textContent = line;
+  updateBubblePosition();
+  speechBubble.classList.add('visible');
+  isSpeaking = true;
+
+  if (bubbleTimeout) clearTimeout(bubbleTimeout);
+  bubbleTimeout = setTimeout(() => {
+    speechBubble.classList.remove('visible');
+    isSpeaking = false;
+    scheduleDialogue();
+  }, 4000);
+}
+
+function scheduleDialogue() {
+  setTimeout(showDialogue, 25000 + Math.random() * 35000);
+}
+scheduleDialogue();
+
+// ─── 즉시 반응 대사 ──────────────────────────────────────
+function showReaction(text) {
+  if (bubbleTimeout) clearTimeout(bubbleTimeout);
+  speechBubble.textContent = text;
+  updateBubblePosition();
+  speechBubble.classList.add('visible');
+  isSpeaking = true;
+
+  bubbleTimeout = setTimeout(() => {
+    speechBubble.classList.remove('visible');
+    isSpeaking = false;
+    scheduleDialogue();
+  }, 3000);
+}
+
+// ─── 인터랙티브 가구 ─────────────────────────────────────
+const furnitureSwitch = document.getElementById('furniture-switch');
+const furniturePanel  = document.getElementById('furniture-panel');
+const lightOverlay    = document.getElementById('light-overlay');
+
+// 이미지 없으면 숨김
+[furnitureSwitch, furniturePanel].forEach(el => {
+  if (el) el.onerror = () => el.classList.add('hidden');
+});
+
+let lightsOn = true;
+
+if (furnitureSwitch) {
+  furnitureSwitch.addEventListener('click', () => {
+    lightsOn = !lightsOn;
+    lightOverlay.classList.toggle('lights-off', !lightsOn);
+    if (!lightsOn) showReaction('앗, 불 꺼졌다!');
+    else showReaction('불 다시 켰어.');
+  });
+}
+
+const PANEL_REACTIONS = [
+  '그거 누르지 마!',
+  '만지면 안 된다고!',
+  '방금 뭐 눌렀어?!',
+  '경고: 무단 조작 감지됨',
+];
+
+if (furniturePanel) {
+  furniturePanel.addEventListener('click', () => {
+    const line = PANEL_REACTIONS[Math.floor(Math.random() * PANEL_REACTIONS.length)];
+    showReaction(line);
+  });
+}
 
 // ─── 종료 버튼 ───────────────────────────────────────────
 btnClose.addEventListener('click', () => {
